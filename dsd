@@ -1,0 +1,23 @@
+[33mcommit 11e7d2640f664d35ed2ffb22bae43d8c4255e675[m[33m ([m[1;36mHEAD -> [m[1;32mtest[m[33m)[m
+Author: Savelev Alexander <rnd.askella@gmail.com>
+Date:   Fri Apr 24 22:02:22 2020 +0300
+
+    Class GameRunner completed
+
+[33mcommit e2d32b8ce1a9e5b836e3393277b9a2389ba0a20c[m[33m ([m[1;33mtag: version_0.01[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Savelev Alexander <rnd.askella@gmail.com>
+Date:   Thu Apr 23 21:11:22 2020 +0300
+
+    Deleted test file
+
+[33mcommit 7b7664a68eae838ea19b85be953e7dbb99e17cdb[m
+Author: Savelev Alexander <rnd.askella@gmail.com>
+Date:   Thu Apr 23 21:05:52 2020 +0300
+
+    Пробую добавить в новую ветку тестовый файл
+
+[33mcommit 14cdbf3fb164408cd361780c8d339c4e10397882[m
+Author: Savelev Alexander <rnd.askella@gmail.com>
+Date:   Thu Apr 23 20:47:20 2020 +0300
+
+    Create game - TicTacToe
