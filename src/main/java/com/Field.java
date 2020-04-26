@@ -1,50 +1,33 @@
 package main.java.com;
 
 public class Field {
-    private String[] TABLE;
-    private final String EMPTY = "|_|";
-    private final String HUMAN_SIGN = "|X|";
-    private final String PC_SIGN = "|O|";
-    private final int FIELD_DIM_X = 3;
-    private final int FIELD_DIM_Y = 3;
+    private String[] table;
 
-
-    public Field() {
-        TABLE = new String[FIELD_DIM_X * FIELD_DIM_Y];
-        for (int i = 0; i < TABLE.length; i++) {
-            TABLE[i] = EMPTY;
+    public Field(int dimX, int dimY, String z) {
+        table = new String[dimX * dimY];
+        for (int i = 0; i < table.length; i++) {
+            table[i] = z;
         }
-        OutTable();
-        System.out.println("Your turn! Press numbers from 1 to 9. Please, don't repeat.");
+        outTable();
     }
 
-    public void OutTable() {
-        for (int i = 0; i < TABLE.length; i++) {
+    public void outTable() {
+        for (int i = 0; i < table.length; i++) {
             if ( i == 3 || i == 6) {
                 System.out.println();
             }
-            System.out.print(TABLE[i] + " ");
+            System.out.print(table[i] + " ");
         }
         System.out.println();
         System.out.println("------------------------------------------");
     }
 
-     static void clearScreen() {
-         for (int i = 0; i < 20; i++) {
-             System.out.println();
-         }
-     }
-
-    public String[] getTABLE() {
-        return TABLE;
+    public String[] getTable() {
+        return table;
     }
 
-    public String getHUMAN_SIGN() {
-        return HUMAN_SIGN;
-    }
-
-    public String getPC_SIGN() {
-        return PC_SIGN;
+    public void setTurn(int slot, String sign){
+        table[slot] = sign;
     }
 }
 

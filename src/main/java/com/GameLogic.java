@@ -5,103 +5,103 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class GameLogic {
-    Field f = new Field();
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private final String HUMAN_SIGN = "|X|";
+    private final String PC_SIGN = "|O|";
+    private final int FIELD_DIM_X = 3;
+    private final int FIELD_DIM_Y = 3;
+    private final String EMPTY = "|_|";
+    private final String FINISH_GAME = "FINISH";
+    private final String PC_WIN = "YOU LOSE! TRY AGAIN!";
+    private final String HUMAN_WIN = "YOU WIN!!";
+    private Field f;
+    BufferedReader reader;
+    private String s;
+    private int x;
 
     void start() throws IOException {
-        while (checkWinHuman() && checkWinPC()) {
+        reader = new BufferedReader(new InputStreamReader(System.in));
+        welcomeWindow();
+        System.out.println("Your turn! Press numbers from 1 to 9. Please, don't repeat.");
+        f = new Field(FIELD_DIM_X, FIELD_DIM_Y, EMPTY);
+        while (checkWin()) {
             turnHuman();
-            f.OutTable();
-            if (!checkWinHuman()) {
-                break;
+            f.outTable();
+            if (!checkWin()) {
+                System.out.println(FINISH_GAME);
+                System.out.println(HUMAN_WIN);
+                continue;
             }
             turnPC();
-            f.OutTable();
-            if (!checkWinPC()) {
-                break;
+            f.outTable();
+            if (!checkWin()) {
+                System.out.println(FINISH_GAME);
+                System.out.println(PC_WIN);
             }
         }
-        System.out.println("ИГРА ОКОНЧЕНА");
-        if (!checkWinHuman())
-            System.out.println("ВЫ ПОБЕДИЛИ");
-        else
-            System.out.println("ВЫ ПРОИГРАЛИ");
     }
 
-    void generalTurn() throws IOException {
-        turnHuman();
-        f.OutTable();
-        checkWinHuman();
-        turnPC();
-        f.OutTable();
-        checkWinPC();
+    void welcomeWindow() throws IOException {
+        System.out.println("WELCOME");
+        System.out.println("This game is TicTacToe. You against PC!");
+        System.out.println("You have 'X' sign");
+        System.out.println("GOOD LUCK");
+        System.out.println("TYPING 'start' for begin");
+        System.out.println();
+
+        s = reader.readLine();
+
+        while (!s.equals("start")) {
+            System.out.println("TYPING - start");
+            s = reader.readLine();
+        }
     }
 
     void turnHuman() throws IOException {
-        System.out.println("Enter the number from 0 to 9.");
-        int x = Integer.parseInt(reader.readLine());
-        while (f.getTABLE()[x - 1].equals(f.getHUMAN_SIGN()) || f.getTABLE()[x - 1].equals(f.getPC_SIGN())) {
-            System.out.println("Enter the number from 0 to 9.");
-            x = Integer.parseInt(reader.readLine());
+        System.out.println("Enter the number from 0 to 8.");
+        s = reader.readLine();
+        if (checkCorTurnHuman()) {
+            x = Integer.parseInt(s);
         }
-        f.getTABLE()[x - 1] = f.getHUMAN_SIGN();
+        while (!checkCorTurnHuman() || (f.getTable()[x].equals(HUMAN_SIGN) || f.getTable()[x].equals(PC_SIGN))) {
+            System.out.println("Enter the number from 0 to 8.");
+            s = reader.readLine();
+            if (checkCorTurnHuman()) {
+                x = Integer.parseInt(s);
+            }
+        } // на этот цикл я потратил 3 часа!!! 3 часа, Карл.
+        f.setTurn(x, HUMAN_SIGN);
     }
 
+    boolean checkCorTurnHuman() {
+        return s.equals("1") | s.equals("2") | s.equals("3") | s.equals("4") | s.equals("5") | s.equals("6") | s.equals("7") | s.equals("8") | s.equals("0");
+    }
 
     void turnPC() {
         int x = (int) (Math.random() * 9);
-        while ((f.getTABLE()[x].equals(f.getHUMAN_SIGN()) || f.getTABLE()[x].equals(f.getPC_SIGN()))) {
+        while ((f.getTable()[x].equals(EMPTY) && f.getTable()[x].equals(HUMAN_SIGN) || f.getTable()[x].equals(PC_SIGN))) {
             x = (int) (Math.random() * 9);
         }
-        f.getTABLE()[x] = f.getPC_SIGN();
-
+        f.setTurn(x, PC_SIGN);
     }
 
-
-    private boolean checkWinHuman() {
-        if (f.getTABLE()[0].equals(f.getTABLE()[1]) && f.getTABLE()[2].equals(f.getTABLE()[0]) && f.getTABLE()[0].equals(f.getHUMAN_SIGN()))
+    private boolean checkWin() {
+        if (f.getTable()[0].equals(f.getTable()[1]) && f.getTable()[2].equals(f.getTable()[0]) && (f.getTable()[0].equals(HUMAN_SIGN) | f.getTable()[0].equals(PC_SIGN))) {
             return false;
-        if (f.getTABLE()[0].equals(f.getTABLE()[1]) && f.getTABLE()[2].equals(f.getTABLE()[0]) && f.getTABLE()[0].equals(f.getHUMAN_SIGN())) {
+        } else if (f.getTable()[3].equals(f.getTable()[4]) && f.getTable()[4].equals(f.getTable()[5]) && (f.getTable()[4].equals(HUMAN_SIGN) | f.getTable()[4].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTABLE()[3].equals(f.getTABLE()[4]) && f.getTABLE()[4].equals(f.getTABLE()[5]) && f.getTABLE()[4].equals(f.getHUMAN_SIGN())) {
+        } else if (f.getTable()[6].equals(f.getTable()[7]) && f.getTable()[7].equals(f.getTable()[8]) && (f.getTable()[8].equals(HUMAN_SIGN) | f.getTable()[8].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTABLE()[6].equals(f.getTABLE()[7]) && f.getTABLE()[7].equals(f.getTABLE()[8]) && f.getTABLE()[8].equals(f.getHUMAN_SIGN())) {
+        } else if (f.getTable()[0].equals(f.getTable()[3]) && f.getTable()[3].equals(f.getTable()[6]) && (f.getTable()[6].equals(HUMAN_SIGN) | f.getTable()[6].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTABLE()[0].equals(f.getTABLE()[3]) && f.getTABLE()[3].equals(f.getTABLE()[6]) && f.getTABLE()[5].equals(f.getHUMAN_SIGN())) {
+        } else if (f.getTable()[1].equals(f.getTable()[4]) && f.getTable()[4].equals(f.getTable()[7]) && (f.getTable()[7].equals(HUMAN_SIGN) | f.getTable()[7].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTABLE()[1].equals(f.getTABLE()[4]) && f.getTABLE()[4].equals(f.getTABLE()[7]) && f.getTABLE()[7].equals(f.getHUMAN_SIGN())) {
+        } else if (f.getTable()[2].equals(f.getTable()[5]) && f.getTable()[5].equals(f.getTable()[8]) && (f.getTable()[8].equals(HUMAN_SIGN) | f.getTable()[8].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTABLE()[2].equals(f.getTABLE()[5]) && f.getTABLE()[5].equals(f.getTABLE()[8]) && f.getTABLE()[8].equals(f.getHUMAN_SIGN())) {
+        } else if (f.getTable()[0].equals(f.getTable()[4]) && f.getTable()[4].equals(f.getTable()[8]) && (f.getTable()[0].equals(HUMAN_SIGN) | f.getTable()[0].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTABLE()[0].equals(f.getTABLE()[4]) && f.getTABLE()[4].equals(f.getTABLE()[8]) && f.getTABLE()[0].equals(f.getHUMAN_SIGN())) {
-            return false;
-        } else if (f.getTABLE()[2].equals(f.getTABLE()[4]) && f.getTABLE()[4].equals(f.getTABLE()[6]) && f.getTABLE()[6].equals(f.getHUMAN_SIGN())) {
+        } else if (f.getTable()[2].equals(f.getTable()[4]) && f.getTable()[4].equals(f.getTable()[6]) && (f.getTable()[6].equals(HUMAN_SIGN) | f.getTable()[6].equals(PC_SIGN))) {
             return false;
         } else
             return true;
-    }
-
-    private boolean checkWinPC() {
-        if (f.getTABLE()[0].equals(f.getTABLE()[1]) && f.getTABLE()[2].equals(f.getTABLE()[0]) && f.getTABLE()[0].equals(f.getPC_SIGN()))
-            return false;
-        if (f.getTABLE()[0].equals(f.getTABLE()[1]) && f.getTABLE()[2].equals(f.getTABLE()[0]) && f.getTABLE()[0].equals(f.getPC_SIGN())) {
-            return false;
-        } else if (f.getTABLE()[3].equals(f.getTABLE()[4]) && f.getTABLE()[4].equals(f.getTABLE()[5]) && f.getTABLE()[4].equals(f.getPC_SIGN())) {
-            return false;
-        } else if (f.getTABLE()[6].equals(f.getTABLE()[7]) && f.getTABLE()[7].equals(f.getTABLE()[8]) && f.getTABLE()[8].equals(f.getPC_SIGN())) {
-            return false;
-        } else if (f.getTABLE()[0].equals(f.getTABLE()[3]) && f.getTABLE()[3].equals(f.getTABLE()[6]) && f.getTABLE()[5].equals(f.getPC_SIGN())) {
-            return false;
-        } else if (f.getTABLE()[1].equals(f.getTABLE()[4]) && f.getTABLE()[4].equals(f.getTABLE()[7]) && f.getTABLE()[7].equals(f.getPC_SIGN())) {
-            return false;
-        } else if (f.getTABLE()[2].equals(f.getTABLE()[5]) && f.getTABLE()[5].equals(f.getTABLE()[8]) && f.getTABLE()[8].equals(f.getPC_SIGN())) {
-            return false;
-        } else if (f.getTABLE()[0].equals(f.getTABLE()[4]) && f.getTABLE()[4].equals(f.getTABLE()[8]) && f.getTABLE()[0].equals(f.getPC_SIGN())) {
-            return false;
-        } else if (f.getTABLE()[2].equals(f.getTABLE()[4]) && f.getTABLE()[4].equals(f.getTABLE()[6]) && f.getTABLE()[6].equals(f.getPC_SIGN())) {
-            return false;
-        } else
-            return true;
-    }
-
+    } //
 }
