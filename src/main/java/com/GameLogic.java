@@ -13,8 +13,8 @@ public class GameLogic {
     private final String FINISH_GAME = "FINISH";
     private final String PC_WIN = "YOU LOSE! TRY AGAIN!";
     private final String HUMAN_WIN = "YOU WIN!!";
-    private Field f;
-    BufferedReader reader;
+    private Field gameField;
+    private BufferedReader reader;
     private String s;
     private int x;
 
@@ -22,17 +22,17 @@ public class GameLogic {
         reader = new BufferedReader(new InputStreamReader(System.in));
         welcomeWindow();
         System.out.println("Your turn! Press numbers from 1 to 9. Please, don't repeat.");
-        f = new Field(FIELD_DIM_X, FIELD_DIM_Y, EMPTY);
+        gameField = new Field(FIELD_DIM_X, FIELD_DIM_Y, EMPTY);
         while (checkWin()) {
             turnHuman();
-            f.outTable();
+            gameField.outTable();
             if (!checkWin()) {
                 System.out.println(FINISH_GAME);
                 System.out.println(HUMAN_WIN);
                 continue;
             }
             turnPC();
-            f.outTable();
+            gameField.outTable();
             if (!checkWin()) {
                 System.out.println(FINISH_GAME);
                 System.out.println(PC_WIN);
@@ -62,14 +62,14 @@ public class GameLogic {
         if (checkCorTurnHuman()) {
             x = Integer.parseInt(s);
         }
-        while (!checkCorTurnHuman() || (f.getTable()[x].equals(HUMAN_SIGN) || f.getTable()[x].equals(PC_SIGN))) {
+        while (!checkCorTurnHuman() || (gameField.getTable()[x].equals(HUMAN_SIGN) || gameField.getTable()[x].equals(PC_SIGN))) {
             System.out.println("Enter the number from 0 to 8.");
             s = reader.readLine();
             if (checkCorTurnHuman()) {
                 x = Integer.parseInt(s);
             }
         } // на этот цикл я потратил 3 часа!!! 3 часа, Карл.
-        f.setTurn(x, HUMAN_SIGN);
+        gameField.setTurn(x, HUMAN_SIGN);
     }
 
     boolean checkCorTurnHuman() {
@@ -78,28 +78,28 @@ public class GameLogic {
 
     void turnPC() {
         int x = (int) (Math.random() * 9);
-        while ((f.getTable()[x].equals(EMPTY) && f.getTable()[x].equals(HUMAN_SIGN) || f.getTable()[x].equals(PC_SIGN))) {
+        while ((gameField.getTable()[x].equals(EMPTY) && gameField.getTable()[x].equals(HUMAN_SIGN) || gameField.getTable()[x].equals(PC_SIGN))) {
             x = (int) (Math.random() * 9);
         }
-        f.setTurn(x, PC_SIGN);
+        gameField.setTurn(x, PC_SIGN);
     }
 
     private boolean checkWin() {
-        if (f.getTable()[0].equals(f.getTable()[1]) && f.getTable()[2].equals(f.getTable()[0]) && (f.getTable()[0].equals(HUMAN_SIGN) | f.getTable()[0].equals(PC_SIGN))) {
+        if (gameField.getTable()[0].equals(gameField.getTable()[1]) && gameField.getTable()[2].equals(gameField.getTable()[0]) && (gameField.getTable()[0].equals(HUMAN_SIGN) | gameField.getTable()[0].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTable()[3].equals(f.getTable()[4]) && f.getTable()[4].equals(f.getTable()[5]) && (f.getTable()[4].equals(HUMAN_SIGN) | f.getTable()[4].equals(PC_SIGN))) {
+        } else if (gameField.getTable()[3].equals(gameField.getTable()[4]) && gameField.getTable()[4].equals(gameField.getTable()[5]) && (gameField.getTable()[4].equals(HUMAN_SIGN) | gameField.getTable()[4].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTable()[6].equals(f.getTable()[7]) && f.getTable()[7].equals(f.getTable()[8]) && (f.getTable()[8].equals(HUMAN_SIGN) | f.getTable()[8].equals(PC_SIGN))) {
+        } else if (gameField.getTable()[6].equals(gameField.getTable()[7]) && gameField.getTable()[7].equals(gameField.getTable()[8]) && (gameField.getTable()[8].equals(HUMAN_SIGN) | gameField.getTable()[8].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTable()[0].equals(f.getTable()[3]) && f.getTable()[3].equals(f.getTable()[6]) && (f.getTable()[6].equals(HUMAN_SIGN) | f.getTable()[6].equals(PC_SIGN))) {
+        } else if (gameField.getTable()[0].equals(gameField.getTable()[3]) && gameField.getTable()[3].equals(gameField.getTable()[6]) && (gameField.getTable()[6].equals(HUMAN_SIGN) | gameField.getTable()[6].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTable()[1].equals(f.getTable()[4]) && f.getTable()[4].equals(f.getTable()[7]) && (f.getTable()[7].equals(HUMAN_SIGN) | f.getTable()[7].equals(PC_SIGN))) {
+        } else if (gameField.getTable()[1].equals(gameField.getTable()[4]) && gameField.getTable()[4].equals(gameField.getTable()[7]) && (gameField.getTable()[7].equals(HUMAN_SIGN) | gameField.getTable()[7].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTable()[2].equals(f.getTable()[5]) && f.getTable()[5].equals(f.getTable()[8]) && (f.getTable()[8].equals(HUMAN_SIGN) | f.getTable()[8].equals(PC_SIGN))) {
+        } else if (gameField.getTable()[2].equals(gameField.getTable()[5]) && gameField.getTable()[5].equals(gameField.getTable()[8]) && (gameField.getTable()[8].equals(HUMAN_SIGN) | gameField.getTable()[8].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTable()[0].equals(f.getTable()[4]) && f.getTable()[4].equals(f.getTable()[8]) && (f.getTable()[0].equals(HUMAN_SIGN) | f.getTable()[0].equals(PC_SIGN))) {
+        } else if (gameField.getTable()[0].equals(gameField.getTable()[4]) && gameField.getTable()[4].equals(gameField.getTable()[8]) && (gameField.getTable()[0].equals(HUMAN_SIGN) | gameField.getTable()[0].equals(PC_SIGN))) {
             return false;
-        } else if (f.getTable()[2].equals(f.getTable()[4]) && f.getTable()[4].equals(f.getTable()[6]) && (f.getTable()[6].equals(HUMAN_SIGN) | f.getTable()[6].equals(PC_SIGN))) {
+        } else if (gameField.getTable()[2].equals(gameField.getTable()[4]) && gameField.getTable()[4].equals(gameField.getTable()[6]) && (gameField.getTable()[6].equals(HUMAN_SIGN) | gameField.getTable()[6].equals(PC_SIGN))) {
             return false;
         } else
             return true;
