@@ -43,7 +43,7 @@ public class GameLogic {
     void welcomeWindow() throws IOException {
         System.out.println("WELCOME");
         System.out.println("This game is TicTacToe. You against PC!");
-        System.out.println("You have 'X' sign");
+        System.out.println("You have " + HUMAN_SIGN + " sign");
         System.out.println("GOOD LUCK");
         System.out.println("TYPING 'start' for begin");
         System.out.println();
@@ -103,5 +103,5 @@ public class GameLogic {
             return false;
         } else
             return true;
-    } //
+    }
 }
